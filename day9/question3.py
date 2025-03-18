@@ -168,13 +168,13 @@ class BankAccount:
         df_customer = df_account[df_account["account_no"] == account_no]
         df_account.at[df_customer.index[0], "balance"] = balance
         
-        df_account.to_csv("account.csv", index=False) # saving changes
+        df_account.to_csv("data/account.csv", index=False) # saving changes
         
 
     @classmethod
     def view_transaction(cls):
-        df_trans = pd.read_csv("transactions.csv")
-        print(tabulate(df_trans, headers=list(df_trans.columns), tablefmt="grid", showindex=False))
+        df_trans = pd.read_csv("data/transactions.csv")
+        print(tabulate(df_trans, headers="keys", tablefmt="grid", showindex=False))
 
 
     # @classmethod
@@ -212,8 +212,8 @@ class BookKeeping(BankAccount):
 
 
 def main():
-    account_book = "account.csv"
-    transaction_file = "transactions.csv"
+    account_book = "data/account.csv"
+    transaction_file = "data/transactions.csv"
     bookkeeping = BookKeeping()
     df_account = bookkeeping.read_csv_file(account_book)
 

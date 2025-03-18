@@ -1,4 +1,4 @@
-employeeid,name,position,salary
+employee_id,name,position,salary
 1,Kai Le,Controls Engineer,92368.0
 2,Robert Patel,Analyst,45703.0
 3,Cameron Lo,Network Administrator,83576.0
@@ -1249,4 +1249,7 @@ employeeid,name,position,salary
 1248,Genesis Herrera,Manager,126898.0
 1249,Olivia Vazquez,Network Engineer,93053.0
 1250,Leilani Ng,Systems Analyst,50513.0
-1251,Olivia Mendoza,Sr. Account Representative,86533.0
+1251,Olivia Mendoza,Sr. Account Representative,129799.5
+1252,dozie,IT,18000.0
+1253,Noel Noe,Business Analyst,34000.0
+1254,hugo luis,IT Support,34000.0
