@@ -93,7 +93,7 @@ class HumanResources(Employee):
     
 
 def main():
-    employee_record = "employees.csv"
+    employee_record = "data/employees.csv"
     hr = HumanResources()
     df_employees = hr.read_csv_file(employee_record)
 
