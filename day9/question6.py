@@ -97,6 +97,21 @@ class Customer:
             json.dump(customers, json_file, indent=4)
 
 
+    @staticmethod
+    def clear_screen():
+        """Clear the terminal screen."""
+        user_continue = input("press enter to continue.. ")
+        system = platform.system()
+        if system == "Windows":
+            os.system("cls")
+        elif system == "Darwin" or system == "Linux":
+            os.system("clear")
+        else:
+            print("Operating system not supported.")
+
+
+    # remove a coustomer
+
 class Processing(Customer):
     def __init__(self):
         #super().__init__(id, email, first, last, company, country)
@@ -147,16 +162,6 @@ def main():
         clear_screen()
  
 
-def clear_screen():
-    """Clear the terminal screen."""
-    user_continue = input("press enter to continue.. ")
-    system = platform.system()
-    if system == "Windows":
-        os.system("cls")
-    elif system == "Darwin" or system == "Linux":
-        os.system("clear")
-    else:
-        print("Operating system not supported.")
 
 
 if __name__ == "__main__":

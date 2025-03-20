@@ -187,22 +187,25 @@ class BankAccount:
         return pd.read_csv(account_book)
     
 
+    @staticmethod
+    def clear_screen():
+        """Clear the terminal screen."""
+        user_continue = input("press enter to continue.. ")
+        system = platform.system()
+        if system == "Windows":
+            os.system("cls")
+        elif system == "Darwin" or system == "Linux":
+            os.system("clear")
+        else:
+            print("Operating system not supported.")
+
     @classmethod
     def transaction_alert(df_account, account_no, amount, transaction_type):
         """Send transaction alert to customers."""
         pass
 
 
-def clear_screen():
-    """Clear the terminal screen."""
-    user_continue = input("press enter to continue.. ")
-    system = platform.system()
-    if system == "Windows":
-        os.system("cls")
-    elif system == "Darwin" or system == "Linux":
-        os.system("clear")
-    else:
-        print("Operating system not supported.")
+
 
 
 class BookKeeping(BankAccount):
@@ -271,7 +274,7 @@ def main():
 
             case _:
                 print("Invalid choice. Please try again.")
-        clear_screen()
+        bookkeeping.clear_screen()
 
 
 

@@ -18,6 +18,7 @@ class Person:
         self.name = new_name
 
     
+    
     def update_age(self, new_age):
         """Update the person's age."""
         self.age = new_age
@@ -35,6 +36,7 @@ class Person:
         address = input("What's the address: ")
 
         return cls(name, age, address)
+
 
 
 def main():
