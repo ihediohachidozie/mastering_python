@@ -1,6 +1,6 @@
 employee_id,name,position,salary
-1,Kai Le,Controls Engineer,92368.0
-2,Robert Patel,Analyst,45703.0
+1,Kai Le,Controls Engineer,101604.8
+2,Robert Patel,Analyst,68554.5
 3,Cameron Lo,Network Administrator,83576.0
 4,Harper Castillo,IT Systems Architect,98062.0
 5,Harper Dominguez,Director,175391.0
@@ -1252,4 +1252,3 @@ employee_id,name,position,salary
 1251,Olivia Mendoza,Sr. Account Representative,129799.5
 1252,dozie,IT,18000.0
 1253,Noel Noe,Business Analyst,34000.0
-1254,hugo luis,IT Support,34000.0

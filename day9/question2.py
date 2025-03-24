@@ -40,7 +40,7 @@ class Employee:
         return cls(employee_id, name, position, salary)
     
 
-    def save_employee(self, employee_record):
+    def save_employee(self, file_path):
         """Write the customer account into a cvs file"""
         employee = {
             "employee_id": self.employee_id,
@@ -49,16 +49,16 @@ class Employee:
             "salary": self.salary
         }
 
-        with open(employee_record, "a", newline="") as file:
-            writer = csv.DictWriter(file, fieldnames=["employeeid","name","position","salary"])
+        with open(file_path, "a", newline="") as file:
+            writer = csv.DictWriter(file, fieldnames=list(employee.keys()))
             writer.writerow(employee)
         print("New employee created successfully!")
 
 
     @classmethod
-    def read_csv_file(cls, employee_record):
+    def read_csv_file(cls, file_path):
         """load employee csv file"""
-        return pd.read_csv(employee_record)
+        return pd.read_csv(file_path)
      
 
     @classmethod
@@ -68,7 +68,7 @@ class Employee:
                 
     
     @classmethod
-    def give_raise(cls, employee_id, amount, df_employees):
+    def give_raise(cls, employee_id, amount, df_employees, file_path):
         """Giving a salary raise to employee"""
         df_employee = df_employees.query(f"employee_id == {employee_id}")
         if len(df_employee) > 0:
@@ -79,11 +79,30 @@ class Employee:
             
             new_salary = df_employees.at[df_employee.index[0], "salary"]
 
-            df_employees.to_csv("employees.csv", index=False) # saving changes
+            df_employees.to_csv(file_path, index=False) # saving changes
 
-            return f"So, a {amount}% increase on a salary of {old_salary} resultsinanewsalaryof {new_salary}"
+            return f"\nOld salary: {old_salary}\nNew salary: {new_salary}\nPercentage increase: {amount}%\n"
         else:
             return None
+
+
+    @classmethod
+    def delete_employee(cls, df_employees, employee_id, file_path):
+        index = df_employees[df_employees["employee_id"] == employee_id].index
+        df_employees = df_employees.drop(index)
+
+        df_employees.to_csv(file_path, index=False) # saving changes
+
+        return "Employee deleted..."
+
+    @staticmethod
+    def validate_emp_id(text):
+        while True:
+            try:
+                id =  int(input(text))
+                return id
+            except ValueError:
+                print("Employee ID must be a number. Please try again.")
 
 
 class HumanResources(Employee):
@@ -93,12 +112,12 @@ class HumanResources(Employee):
     
 
 def main():
-    employee_record = "data/employees.csv"
+    file_path = "data/employees.csv"
     hr = HumanResources()
-    df_employees = hr.read_csv_file(employee_record)
+    df_employees = hr.read_csv_file(file_path)
 
     while True:
-        print("""Employee Management System\n1. Create Employee\n2. View employee\n3. Give raise\n4. Exit""")
+        print("""Employee Management System\n1. Create Employee\n2. View employee\n3. Give raise\n4. Delete employee\n5. Exit""")
         print()
         user_choice = input("Enter your choice: ")
 
@@ -106,28 +125,38 @@ def main():
             case "1":
                 employee_id = len(df_employees) + 1
                 employee = Employee.create_employee(employee_id)
-                employee.save_employee(employee_record)
+                employee.save_employee(file_path)
                 print("Employee details")
                 print(employee)
 
             case "2":
-                employee_id = int(input("What's the employee id: "))
+                employee_id = hr.validate_emp_id("What's the employee id: ")
+                
                 df_employee = hr.view_employee_details(df_employees, employee_id)
                 print(tabulate(df_employee, headers="keys", tablefmt="grid", showindex=False))
 
             case "3":
                 while True:
                     try:
-                        employee_id = int(input("What's the employee id: "))
+                        employee_id = hr.validate_emp_id("What's the employee id: ")
                         raise_percentage = float(input("What's the raise percentage: "))
                         break
                     except ValueError:
                         print("Must be a number. Try again.")
-                result = hr.give_raise(employee_id, raise_percentage, df_employees)
+                result = hr.give_raise(employee_id, raise_percentage, df_employees, file_path)
                 print(result)
           
-
             case "4":
+                employee_id = hr.validate_emp_id("What's the employee id: ")
+                df_employee = hr.view_employee_details(df_employees, employee_id)
+                print(tabulate(df_employee, headers="keys", tablefmt="grid", showindex=False))
+
+                response = input("\nDo you want to delete this employee? Y/n ").lower()
+
+                if response == "y":
+                    print(hr.delete_employee(df_employees, employee_id, file_path))
+
+            case "5":
                 sys.exit("Thank you for using our HR services!")
 
             case _:

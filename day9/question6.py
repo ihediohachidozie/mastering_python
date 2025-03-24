@@ -97,6 +97,17 @@ class Customer:
             json.dump(customers, json_file, indent=4)
 
 
+
+    @classmethod
+    def delete_customer(cls, customers, id, file_path):
+        for customer in customers:
+            if customer.get("id") == id:
+                customers.remove(customer)
+
+        with open(file_path, "w") as json_file:
+            json.dump(customers, json_file, indent=4)
+            
+
     @staticmethod
     def clear_screen():
         """Clear the terminal screen."""
@@ -124,7 +135,7 @@ def main():
     customers = processing.load_file(file_path)
     
     while True:
-        print("""Customer Management System\n1. Create customer\n2. View customer\n3. Edit customer \n4. Exit""")
+        print("""Customer Management System\n1. Create customer\n2. View customer\n3. Edit customer \n4. Delete customer\n5. Exit""")
         print()
         user_choice = input("Enter your choice: ")
 
@@ -139,27 +150,51 @@ def main():
             case "2":
                 id = int(input("What's the id: "))
                 customer = processing.view_customer(customers, id)
-                print("\nCustomer Information:")
-                print(json.dumps(customer, indent=4))
+                if customer:
+                    print("\nCustomer Information:")
+                    print(json.dumps(customer, indent=4))
+                else:
+                    print("Customer does not exist...")   
             
             case "3":
                 id = int(input("What's the id: "))
                 customer = processing.view_customer(customers, id)
-                print("\nCustomer Information:")
-                print(json.dumps(customer, indent=4))
-                print()
-                edit_customer = input("Do you want to make changes? Y/n ").lower()
-                if edit_customer == "y":
-                    processing.update_customer(customers, id, file_path)
-                    print("\n\nUpdate completed successfully.")
+                if customer:
+                    print("\nCustomer Information:")
+                    print(json.dumps(customer, indent=4))
+                    print()
+                    edit_customer = input("Do you want to make changes? Y/n ").lower()
+                    if edit_customer == "y":
+                        processing.update_customer(customers, id, file_path)
+                        print("\n\nUpdate completed successfully.")
+                else:
+                    print("Customer does not exist...")
 
             case "4":
+                id = int(input("What's the id: "))
+                customer = processing.view_customer(customers, id)
+                if customer:
+                    print("\nCustomer Information:")
+                    print(json.dumps(customer, indent=4))
+                    print()
+                    resp = input("Do you really want to delete this customer? Y/n ").lower()
+
+                    if resp == "y":
+                        processing.delete_customer(customers, id, file_path)
+
+                        print("Customer deleted..")
+                else:
+                    print("Customer does not exist...")
+
+
+            case "5":
                 print("Thank you for using our services..")
                 break
+            
                 
             case _:
                 pass
-        clear_screen()
+        processing.clear_screen()
  
 
 
